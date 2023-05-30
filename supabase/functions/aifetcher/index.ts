@@ -1,14 +1,14 @@
 //TODO make proper import_map.json
-import { serve } from "https://deno.land/std/http/server.ts"
-import { OpenAIEmbeddings } from "https://esm.sh/langchain/embeddings/openai";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.22.0";
-import { SupabaseHybridSearch } from "https://esm.sh/langchain/retrievers/supabase";
-import { OpenAI } from "https://esm.sh/langchain/llms/openai";
-import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "https://esm.sh/langchain/chains";
-import { ChatOpenAI } from "https://esm.sh/langchain/chat_models/openai";
-import { PlanAndExecuteAgentExecutor } from "https://esm.sh/langchain/experimental/plan_and_execute";
-import { initializeAgentExecutorWithOptions } from "https://esm.sh/langchain/agents";
-
+import { serve } from "http/server.ts";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { createClient } from "@supabase/supabase-js";
+import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
+import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_execute";
+import { OpenAI } from "langchain/llms/openai";
+import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import { ChainTool } from "langchain/tools";
 
 import { corsHeaders } from "../_shared/cors.ts";
 
@@ -30,34 +30,35 @@ serve(async (req) => {
   }
 
   try {
-  const { input } = await req.json();
+    const { input } = await req.json();
 
-  const model = new ChatOpenAI({
-    temperature: 0,
-    modelName: "gpt-3.5-turbo",
-    verbose: true,
-  });
+    const model = new ChatOpenAI({
+      temperature: 0,
+      modelName: "gpt-3.5-turbo",
+      verbose: true,
+      openAIApiKey: openaikey
+    });
 
-  const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
-  console.log("embeddings is created")
-  const rulesRetriever = new SupabaseHybridSearch(embeddings, {
-    client,
-    similarityK: 2,
-    keywordK: 2,
-    tableName: "rules",
-    similarityQueryName: "match_rules",
-    keywordQueryName: "kw_match_rules",
-  });
-  const cardsRetriever = new SupabaseHybridSearch(embeddings, {
-    client,
-    similarityK: 2,
-    keywordK: 2,
-    tableName: "cards",
-    similarityQueryName: "match_cards",
-    keywordQueryName: "kw_match_cards",
-  });
-  console.log("retrievers is created")
-  console.log(JSON.stringify({ input }))
+    const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
+    console.log("embeddings is created")
+    const rulesRetriever = new SupabaseHybridSearch(embeddings, {
+      client,
+      similarityK: 2,
+      keywordK: 2,
+      tableName: "rules",
+      similarityQueryName: "match_rules",
+      keywordQueryName: "kw_match_rules",
+    });
+    const cardsRetriever = new SupabaseHybridSearch(embeddings, {
+      client,
+      similarityK: 2,
+      keywordK: 2,
+      tableName: "cards",
+      similarityQueryName: "match_cards",
+      keywordQueryName: "kw_match_cards",
+    });
+    console.log("retrievers is created")
+    console.log(JSON.stringify({ input }))
 
 //   const cardsDocs = await cardsRetriever.getRelevantDocuments(JSON.stringify({ input }));
 //   const rulesDocs = await rulesRetriever.getRelevantDocuments(JSON.stringify({ input }));
@@ -73,43 +74,45 @@ serve(async (req) => {
 //     question: JSON.stringify({input}),
 // });
 
-const rulesChain = new ChainTool({
-  name: "rules",
-  description:
-    "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
-  chain: rulesRetriever,
-});
+  const rulesChain = new ChainTool({
+    name: "rules",
+    description:
+      "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
+    chain: rulesRetriever,
+  });
 
-const cardsChain = new ChainTool({
-  name: "cards",
-  description:
-    "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
-  chain: cardsRetriever,
-});
+  const cardsChain = new ChainTool({
+    name: "cards",
+    description:
+      "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
+    chain: cardsRetriever,
+  });
 
-const tools = [
-  rulesChain,
-  cardsChain
-];
+  const tools = [
+    rulesChain,
+    cardsChain
+  ];
 
-const executor = PlanAndExecuteAgentExecutor.fromLLMAndTools({
-  llm: model,
-  tools,
-});
+  const executor = PlanAndExecuteAgentExecutor.fromLLMAndTools({
+    llm: model,
+    tools,
+  });
 
-const res = await executor.call({
-  input: JSON.stringify({input}),
-});
+  const res = await executor.call({
+    input: JSON.stringify({input}),
+  });
 
-return new Response(JSON.stringify(res), {
-  headers: { ...corsHeaders, "Content-Type": "application/json" },
-});
-} catch (e) {
-  return new Response(JSON.stringify({ error: e.message }), {
-    status: 500,
+  return new Response(JSON.stringify(res), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
-}
+  } catch (e) {
+    console.log(JSON.stringify({ error: e.message }));
+    console.trace();
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
 });
 
 
