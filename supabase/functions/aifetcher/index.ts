@@ -73,19 +73,19 @@ serve(async (req) => {
 //     question: JSON.stringify({input}),
 // });
 
-// const rulesChain = new ChainTool({
-//   name: "rules",
-//   description:
-//     "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
-//   chain: rulesRetriever,
-// });
+const rulesChain = new ChainTool({
+  name: "rules",
+  description:
+    "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
+  chain: rulesRetriever,
+});
 
-// const cardsChain = new ChainTool({
-//   name: "cards",
-//   description:
-//     "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
-//   chain: cardsRetriever,
-// });
+const cardsChain = new ChainTool({
+  name: "cards",
+  description:
+    "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
+  chain: cardsRetriever,
+});
 
 const tools = [
   rulesChain,
