@@ -1,13 +1,12 @@
-//TODO make proper import_map.json
 import { serve } from "http/server.ts";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { createClient } from "@supabase/supabase-js";
 import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
-import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
+//import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_execute";
-import { OpenAI } from "langchain/llms/openai";
-import { initializeAgentExecutorWithOptions } from "langchain/agents";
+//import { OpenAI } from "langchain/llms/openai";
+//import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
 
 import { corsHeaders } from "../_shared/cors.ts";
@@ -41,6 +40,7 @@ serve(async (req) => {
 
     const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
     console.log("embeddings is created")
+    
     const rulesRetriever = new SupabaseHybridSearch(embeddings, {
       client,
       similarityK: 2,
@@ -59,20 +59,6 @@ serve(async (req) => {
     });
     console.log("retrievers is created")
     console.log(JSON.stringify({ input }))
-
-//   const cardsDocs = await cardsRetriever.getRelevantDocuments(JSON.stringify({ input }));
-//   const rulesDocs = await rulesRetriever.getRelevantDocuments(JSON.stringify({ input }));
-//   console.log("docs are found")
-//   console.log(cardsDocs)
-//   console.log(rulesDocs)
-
-//   const finalDocs = {...cardsDocs, ...rulesDocs}
-//   const model = new OpenAI({openAIApiKey: openaikey, maxConcurrency: 10 });
-//   const chain = loadQAMapReduceChain(model);
-//   const res = await chain.call({
-//     input_documents: finalDocs,
-//     question: JSON.stringify({input}),
-// });
 
   const rulesChain = new ChainTool({
     name: "rules",
