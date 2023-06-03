@@ -10,9 +10,6 @@ import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_exe
 import { ChainTool } from "langchain/tools";
 //import { SupabaseVectorStore } from 'langchain/vectorstores/supabase'
 import { RetrievalQAChain } from "langchain/chains";
-
-
-
 import { corsHeaders } from "../_shared/cors.ts";
 
 const openaikey = "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";
@@ -44,7 +41,7 @@ serve(async (req) => {
 
     const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
     console.log("embeddings is created")
-    
+
     const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
       similarityK: 2,
@@ -74,7 +71,6 @@ serve(async (req) => {
       "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
     chain: rulesChain,
   });
-  
 
   const cardsChainTool = new ChainTool({
     name: "cards",
@@ -97,7 +93,7 @@ serve(async (req) => {
     input: JSON.stringify({input}),
   });
   console.log(JSON.stringify(res))
-  
+
   return new Response(JSON.stringify(res), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
