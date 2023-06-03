@@ -8,6 +8,10 @@ import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_exe
 //import { OpenAI } from "langchain/llms/openai";
 //import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
+//import { SupabaseVectorStore } from 'langchain/vectorstores/supabase'
+import { RetrievalQAChain } from "langchain/chains";
+
+
 
 import { corsHeaders } from "../_shared/cors.ts";
 
@@ -41,7 +45,7 @@ serve(async (req) => {
     const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
     console.log("embeddings is created")
     
-    const rulesRetriever = new SupabaseHybridSearch(embeddings, {
+    const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
       similarityK: 2,
       keywordK: 2,
@@ -49,34 +53,39 @@ serve(async (req) => {
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
     });
-    const cardsRetriever = new SupabaseHybridSearch(embeddings, {
+    const rulesChain = RetrievalQAChain.fromLLM(model, rulesDocs);
+  
+    const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 2,
-      keywordK: 2,
+      similarityK: 1,
+      keywordK: 1,
       tableName: "cards",
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
-    console.log("retrievers is created")
+    const cardsChain = RetrievalQAChain.fromLLM(model, cardsDocs);
+
+    console.log("vectorstores are created")
     console.log(JSON.stringify({ input }))
 
-  const rulesChain = new ChainTool({
+  const rulesChainTool = new ChainTool({
     name: "rules",
     description:
       "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
-    chain: rulesRetriever,
+    chain: rulesChain,
   });
+  
 
-  const cardsChain = new ChainTool({
+  const cardsChainTool = new ChainTool({
     name: "cards",
     description:
       "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
-    chain: cardsRetriever,
+    chain: cardsChain
   });
 
   const tools = [
-    rulesChain,
-    cardsChain
+    rulesChainTool,
+    cardsChainTool
   ];
 
   const executor = PlanAndExecuteAgentExecutor.fromLLMAndTools({
@@ -86,6 +95,7 @@ serve(async (req) => {
 
   const res = await executor.call({
     input: JSON.stringify({input}),
+    
   });
 
   return new Response(JSON.stringify(res), {
