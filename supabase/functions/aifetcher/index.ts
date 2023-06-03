@@ -95,9 +95,9 @@ serve(async (req) => {
 
   const res = await executor.call({
     input: JSON.stringify({input}),
-    
   });
-
+  console.log(JSON.stringify(res))
+  
   return new Response(JSON.stringify(res), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
