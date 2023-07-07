@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
 //import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_execute";
+import { initializeAgentExecutorWithOptions } from "langchain/agents";
 //import { OpenAI } from "langchain/llms/openai";
 //import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
@@ -16,12 +16,12 @@ const openaikey = Deno.env.get('openaikey');
 
 serve(async (req) => {
 
-  const supabase = createClient(
+  const client = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
   );
-  if (!supabase) throw new Error('supabase client was not created as expected')
+  if (!client) throw new Error('supabase client was not created as expected')
   console.log("client created")
 
   // This is needed if you're planning to invoke your function from a browser.
@@ -84,7 +84,7 @@ serve(async (req) => {
     cardsChainTool
   ];
 
-  const executor = PlanAndExecuteAgentExecutor.fromLLMAndTools({
+  const executor = await initializeAgentExecutorWithOptions({
     llm: model,
     tools,
   });
