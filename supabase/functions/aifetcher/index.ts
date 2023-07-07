@@ -84,10 +84,12 @@ serve(async (req) => {
     cardsChainTool
   ];
 
-  const executor = await initializeAgentExecutorWithOptions({
-    llm: model,
-    tools,
-  });
+  const executor = await initializeAgentExecutorWithOptions(
+    tools, model, {
+      agentType: "openai-functions",
+      verbose: true,
+    }
+  );
 
   const res = await executor.call({
     input: JSON.stringify({input}),
