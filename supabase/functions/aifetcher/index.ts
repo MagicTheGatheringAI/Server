@@ -16,13 +16,13 @@ const openaikey = Deno.env.get('openaikey');
 
 serve(async (req) => {
 
-  const client = createClient(
+  const supabase = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
   );
-  if (!client) throw new Error('supabase client was not created as expected')
-
+  if (!supabase) throw new Error('supabase client was not created as expected')
+  console.log("client created")
 
   // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
