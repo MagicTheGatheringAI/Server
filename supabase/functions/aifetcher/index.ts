@@ -12,7 +12,7 @@ import { ChainTool } from "langchain/tools";
 import { RetrievalQAChain } from "langchain/chains";
 import { corsHeaders } from "../_shared/cors.ts";
 
-const openaikey = "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";
+const openaikey = Deno.env.get('openaikey');
 
 serve(async (req) => {
 
