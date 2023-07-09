@@ -44,8 +44,8 @@ serve(async (req) => {
 
     const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 2,
-      keywordK: 2,
+      similarityK: 3,
+      keywordK: 3,
       tableName: "rules",
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
@@ -54,8 +54,8 @@ serve(async (req) => {
   
     const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 1,
-      keywordK: 1,
+      similarityK: 2,
+      keywordK: 3,
       tableName: "cards",
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
