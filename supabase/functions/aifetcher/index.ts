@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
 //import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { PlanAndExecuteAgentExecutor } from "langchain/experimental/plan_and_execute";
+import { initializeAgentExecutorWithOptions } from "langchain/agents";
 //import { OpenAI } from "langchain/llms/openai";
 //import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
@@ -16,12 +16,12 @@ const openaikey = Deno.env.get('openaikey');
 
 serve(async (req) => {
 
-  const supabase = createClient(
+  const client = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
   );
-  if (!supabase) throw new Error('supabase client was not created as expected')
+  if (!client) throw new Error('supabase client was not created as expected')
   console.log("client created")
 
   // This is needed if you're planning to invoke your function from a browser.
@@ -32,7 +32,13 @@ serve(async (req) => {
   try {
     const { input } = await req.json();
 
-    const model = new ChatOpenAI({
+    const model4 = new ChatOpenAI({
+      temperature: 0,
+      modelName: "gpt-4",
+      verbose: true,
+      openAIApiKey: openaikey
+    });
+    const model35 = new ChatOpenAI({
       temperature: 0,
       modelName: "gpt-3.5-turbo",
       verbose: true,
@@ -50,17 +56,17 @@ serve(async (req) => {
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
     });
-    const rulesChain = RetrievalQAChain.fromLLM(model, rulesDocs);
+    const rulesChain = RetrievalQAChain.fromLLM(model35, rulesDocs);
   
     const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 1,
-      keywordK: 1,
+      similarityK: 2,
+      keywordK: 2,
       tableName: "cards",
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
-    const cardsChain = RetrievalQAChain.fromLLM(model, cardsDocs);
+    const cardsChain = RetrievalQAChain.fromLLM(model35, cardsDocs);
 
     console.log("vectorstores are created")
     console.log(JSON.stringify({ input }))
@@ -84,10 +90,12 @@ serve(async (req) => {
     cardsChainTool
   ];
 
-  const executor = PlanAndExecuteAgentExecutor.fromLLMAndTools({
-    llm: model,
-    tools,
-  });
+  const executor = await initializeAgentExecutorWithOptions(
+    tools, model4, {
+      agentType: "openai-functions",
+      verbose: true,
+    }
+  );
 
   const res = await executor.call({
     input: JSON.stringify({input}),
