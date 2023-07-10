@@ -32,7 +32,13 @@ serve(async (req) => {
   try {
     const { input } = await req.json();
 
-    const model = new ChatOpenAI({
+    const model4 = new ChatOpenAI({
+      temperature: 0,
+      modelName: "gpt-4",
+      verbose: true,
+      openAIApiKey: openaikey
+    });
+    const model35 = new ChatOpenAI({
       temperature: 0,
       modelName: "gpt-3.5-turbo",
       verbose: true,
@@ -44,23 +50,23 @@ serve(async (req) => {
 
     const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 3,
-      keywordK: 3,
+      similarityK: 2,
+      keywordK: 2,
       tableName: "rules",
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
     });
-    const rulesChain = RetrievalQAChain.fromLLM(model, rulesDocs);
+    const rulesChain = RetrievalQAChain.fromLLM(model35, rulesDocs);
   
     const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
       similarityK: 2,
-      keywordK: 3,
+      keywordK: 2,
       tableName: "cards",
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
-    const cardsChain = RetrievalQAChain.fromLLM(model, cardsDocs);
+    const cardsChain = RetrievalQAChain.fromLLM(model35, cardsDocs);
 
     console.log("vectorstores are created")
     console.log(JSON.stringify({ input }))
@@ -85,7 +91,7 @@ serve(async (req) => {
   ];
 
   const executor = await initializeAgentExecutorWithOptions(
-    tools, model, {
+    tools, model4, {
       agentType: "openai-functions",
       verbose: true,
     }
