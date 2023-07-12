@@ -3,3 +3,4 @@ supabase/.branches/_current_branch
 supabase/migrations/20230423031142_remote_commit.sql
 supabase/.temp/project-ref
 supabase/functions/.env.local
+supabase/functions/.env
