@@ -2,13 +2,9 @@ import { serve } from "http/server.ts";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { createClient } from "@supabase/supabase-js";
 import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
-//import { loadQAStuffChain, loadQAMapReduceChain, loadQARefineChain, VectorDBQAChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
-//import { OpenAI } from "langchain/llms/openai";
-//import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
-//import { SupabaseVectorStore } from 'langchain/vectorstores/supabase'
 import { RetrievalQAChain } from "langchain/chains";
 import { corsHeaders } from "../_shared/cors.ts";
 
