@@ -3,9 +3,9 @@
 // This enables autocomplete, go to definition, etc.
 
 import { serve } from 'std/server'
-
-// Import via bare specifier thanks to the import_map.json file.
 import Stripe from 'stripe'
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const stripe = new Stripe(Deno.env.get('STRIPE_API_KEY') as string, {
   // This is needed to use the Fetch API rather than relying on the Node http
@@ -16,14 +16,30 @@ const stripe = new Stripe(Deno.env.get('STRIPE_API_KEY') as string, {
 // This is needed in order to use the Web Crypto API in Deno.
 const cryptoProvider = Stripe.createSubtleCryptoProvider()
 
-console.log('Hello from Stripe Webhook!')
+const firebaseConfig = {
+  apiKey: Deno.env.get('apiKey'),
+  authDomain: Deno.env.get('authDomain'),
+  projectId: Deno.env.get('projectID'),
+  storageBucket: Deno.env.get('storageBucket'),
+  messagingSenderId: Deno.env.get('messagingSenderID'),
+  appId: Deno.env.get('appID'),
+  measurementId: Deno.env.get('measurementID')
+};
 
-serve(async (request) => {
-  const signature = request.headers.get('Stripe-Signature')
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+
+serve(async (stripeRequest) => {
+  const signature = stripeRequest.headers.get('Stripe-Signature')
 
   // First step is to verify the event. The .text() method must be used as the
   // verification relies on the raw request body rather than the parsed JSON.
-  const body = await request.text()
+  const body = await stripeRequest.text()
   let receivedEvent
   try {
     receivedEvent = await stripe.webhooks.constructEventAsync(
@@ -39,6 +55,15 @@ serve(async (request) => {
   console.log(`🔔 Event received: ${receivedEvent.id}`)
   return new Response(JSON.stringify({ ok: true }), { status: 200 })
 })
+
+import { doc, updateDoc } from "firebase/firestore";
+
+const washingtonRef = doc(db, "cities", "DC");
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(washingtonRef, {
+  capital: true
+});
 
 // To invoke:
 // curl -i --location --request POST 'http://localhost:54321/functions/v1/' \
