@@ -4,6 +4,8 @@
     "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.29.0",
     "langchain/": "https://esm.sh/langchain@0.0.117/",
     "std/server": "https://deno.land/std@0.177.0/http/server.ts",
-    "stripe": "https://esm.sh/stripe@11.1.0?target=deno"
+    "stripe": "https://esm.sh/stripe@11.1.0?target=deno",
+    "firebase/app": "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"
   }
 }
