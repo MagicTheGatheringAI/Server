@@ -2,10 +2,10 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 
-import { serve } from 'std/server'
-import Stripe from 'stripe'
+import { serve } from 'std/server';
+import Stripe from 'stripe';
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, increment } from "firebase/firestore";
 
 const stripe = new Stripe(Deno.env.get('STRIPE_API_KEY') as string, {
   // This is needed to use the Fetch API rather than relying on the Node http
@@ -52,18 +52,30 @@ serve(async (stripeRequest) => {
   } catch (err) {
     return new Response(err.message, { status: 400 })
   }
-  console.log(`🔔 Event received: ${receivedEvent.id}`)
+
+  const userRef = doc(db, "users", String(receivedEvent.data.object.client_reference_id));
+
+  // Set the "capital" field of the city 'DC'
+  if (receivedEvent.type == "checkout.session.completed") {
+    console.log('inside of if statement');
+    try {
+      console.log('before update doc');
+      await updateDoc(userRef, {
+        credits: increment(20)
+      });
+      console.log('after update doc')
+    } catch (err) {
+      console.log(err)
+    }    
+    console.log(receivedEvent);
+    console.log('updated firestore')
+  } else {
+    console.log(`skipped ${receivedEvent.id}`)
+  }
+
+
   return new Response(JSON.stringify({ ok: true }), { status: 200 })
 })
-
-import { doc, updateDoc } from "firebase/firestore";
-
-const washingtonRef = doc(db, "cities", "DC");
-
-// Set the "capital" field of the city 'DC'
-await updateDoc(washingtonRef, {
-  capital: true
-});
 
 // To invoke:
 // curl -i --location --request POST 'http://localhost:54321/functions/v1/' \
