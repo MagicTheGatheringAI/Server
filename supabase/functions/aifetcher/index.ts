@@ -52,7 +52,7 @@ serve(async (req) => {
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
     });
-    const rulesChain = RetrievalQAChain.fromLLM(model35, rulesDocs);
+    const rulesChain = RetrievalQAChain.fromLLM(model4, rulesDocs);
   
     const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
@@ -62,7 +62,7 @@ serve(async (req) => {
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
-    const cardsChain = RetrievalQAChain.fromLLM(model35, cardsDocs);
+    const cardsChain = RetrievalQAChain.fromLLM(model4, cardsDocs);
 
     console.log("vectorstores are created")
     console.log(JSON.stringify({ input }))
