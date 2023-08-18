@@ -1,11 +1,9 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.32.0'
-import { LogSnag } from 'https://cdn.logsnag.com/deno/0.1.8/index.ts';
+import { serve } from 'std/server'
+import { createClient } from '@supabase/supabase-js'
+import { LogSnag } from 'logsnag'
 
 const supabaseClient = createClient(
-  // Supabase API URL - env var exported by default.
   Deno.env.get('SUPABASE_URL') ?? '',
-  // Supabase API ANON KEY - env var exported by default.
   Deno.env.get('SUPABASE_ANON_KEY') ?? '',
 )
 const logsnag = new LogSnag({ 
