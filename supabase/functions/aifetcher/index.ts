@@ -34,12 +34,6 @@ serve(async (req) => {
       verbose: true,
       openAIApiKey: openaikey
     });
-    const model35 = new ChatOpenAI({
-      temperature: 0,
-      modelName: "gpt-3.5-turbo",
-      verbose: true,
-      openAIApiKey: openaikey
-    });
 
     const embeddings = new OpenAIEmbeddings({openAIApiKey: openaikey});
     console.log("embeddings is created")
