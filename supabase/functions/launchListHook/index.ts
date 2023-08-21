@@ -172,9 +172,9 @@ serve(async (req) => {
                                       <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                           <td style="padding-right: 0px;padding-left: 0px;" align="center">
-        
-                                            <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/image-3.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
-                                              width="470" />
+                                            <a href="https://magicrules.ai" target="_blank">
+                                              <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/logo" alt="Magic AI Logo" title="Magic AI Logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
+                                                width="470" />
         
                                           </td>
                                         </tr>
