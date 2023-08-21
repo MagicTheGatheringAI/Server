@@ -90,9 +90,10 @@ serve(async (req) => {
   const res = await executor.call({
     input: JSON.stringify({input}),
   });
-  console.log(JSON.stringify(res))
+  console.log(JSON.stringify(res.output))
 
-  return new Response(JSON.stringify(res), {
+  return new Response(JSON.stringify(res.output), {
+    status:200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
   } catch (e) {
