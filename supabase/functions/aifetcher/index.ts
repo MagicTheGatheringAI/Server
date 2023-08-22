@@ -5,10 +5,19 @@ import { SupabaseHybridSearch } from "langchain/retrievers/supabase";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { ChainTool } from "langchain/tools";
-import { RetrievalQAChain } from "langchain/chains";
+import { RetrievalQAChain, loadQAStuffChain } from "langchain/chains";
+import { PromptTemplate } from "langchain/prompts";
 import { corsHeaders } from "../_shared/cors.ts";
 
 const openaikey = Deno.env.get('openaikey');
+
+const promptTemplate = `Use the following pieces of context to answer the question at the end. Make sure information about rulings are in the answer. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+{context}
+
+Question: {question}`;
+
+const prompt = PromptTemplate.fromTemplate(promptTemplate);
 
 serve(async (req) => {
   // This is needed if you're planning to invoke your function from a browser.
@@ -53,7 +62,10 @@ serve(async (req) => {
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
-    const cardsChain = RetrievalQAChain.fromLLM(model4, cardsDocs);
+    const cardsChain = new RetrievalQAChain({
+      combineDocumentsChain: loadQAStuffChain(model4, { prompt }),
+      retriever: cardsDocs,
+    });
 
     console.log("vectorstores are created")
     console.log(inputpayload.prompt)
