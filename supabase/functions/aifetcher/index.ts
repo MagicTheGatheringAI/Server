@@ -11,7 +11,11 @@ import { corsHeaders } from "../_shared/cors.ts";
 const openaikey = Deno.env.get('openaikey');
 
 serve(async (req) => {
-
+  // This is needed if you're planning to invoke your function from a browser.
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+  const inputpayload = await req.json();
   const client = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -20,14 +24,7 @@ serve(async (req) => {
   if (!client) throw new Error('supabase client was not created as expected')
   console.log("client created")
 
-  // This is needed if you're planning to invoke your function from a browser.
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
-
   try {
-    const { input } = await req.json();
-
     const model4 = new ChatOpenAI({
       temperature: 0,
       modelName: "gpt-4",
@@ -59,7 +56,7 @@ serve(async (req) => {
     const cardsChain = RetrievalQAChain.fromLLM(model4, cardsDocs);
 
     console.log("vectorstores are created")
-    console.log(JSON.stringify({ input }))
+    console.log(inputpayload.prompt)
 
   const rulesChainTool = new ChainTool({
     name: "rules",
@@ -86,10 +83,10 @@ serve(async (req) => {
       verbose: true,
     }
   );
-
-  const res = await executor.call({
-    input: JSON.stringify({input}),
-  });
+  const res = await executor.call(
+    {input: inputpayload.prompt},
+    {metadata: { referid: inputpayload.referid }}
+    );
   console.log(JSON.stringify(res.output))
 
   return new Response(JSON.stringify(res.output), {
