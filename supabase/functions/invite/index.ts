@@ -227,7 +227,7 @@ serve(async (req) => {
                                             <p style="line-height: 140%;">&nbsp;</p>
                                             <p style="line-height: 140%;">I've been working on this idea since the start of 2023 and progress has been slow. Though, I am optimistic of the state of the project and it is time to hear some real word feedback.</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
-                                            <p style="line-height: 140%;">That is wear you come in. You will have trial credits in your account you can use for free. I want to hear about your experience and use this feedback to improve! The next thing on the roadmap is to make this feedback easy,
+                                            <p style="line-height: 140%;">That is wear you come in. You will have trial credits in your account you can use for free. I want to hear about your experience and use this feedback to improve! I know Magic AI isn't yet perfect and it will get things wrong sometimes. The next thing on the roadmap is to make this feedback easy,
                                               right inside of Magic AI. For now shoot me a message on <a title="" target="_blank" href="https://twitter.com/magic_tcg_ai" rel="noopener">Twitter</a> or send an email to <a title="" target="_blank" href="mailto:feedback@mtgrules.ai?subject=Feedback"
                                                 rel="noopener">feedback@mtgrules.ai</a>.</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
