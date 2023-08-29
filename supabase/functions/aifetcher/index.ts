@@ -19,6 +19,9 @@ Question: {question}`;
 
 const prompt = PromptTemplate.fromTemplate(promptTemplate);
 
+const prefix =
+  "You are a helpful AI assistant. When receiving information from the cards tool, focus on the rulings info to help figure out how cards interact. Only use the information given to answer the questions.";
+
 serve(async (req) => {
   // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
@@ -93,6 +96,9 @@ serve(async (req) => {
     tools, model4, {
       agentType: "openai-functions",
       verbose: true,
+      agentArgs: {
+        prefix,
+      },
     }
   );
   const res = await executor.call(
