@@ -24,7 +24,7 @@ serve(async (req) => {
     event: "User Waitlisted",
     icon: "‼",
     tags: {
-      refid: event[0].referral_code,
+      referid: event[0].referral_code,
     },
     notify: false
   })

@@ -518,7 +518,7 @@ serve(async (req) => {
           event: "User Invited",
           icon: "✉️",
           tags: {
-            refid: tablechange.record.referID,
+            referid: tablechange.record.referID,
           },
           notify: false
         })
