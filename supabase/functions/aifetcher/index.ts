@@ -101,10 +101,11 @@ serve(async (req) => {
       },
     }
   );
-  const res = await executor.call(
-    {input: inputpayload.prompt},
-    {metadata: { referid: inputpayload.referid }}
-    );
+  const res = await executor.call({
+    input: inputpayload.prompt,
+    metadata: { referid: inputpayload.referid },
+    tags: [inputpayload.referid, inputpayload.game]
+  });
   console.log(JSON.stringify(res.output))
 
   return new Response(JSON.stringify(res.output), {
