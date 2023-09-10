@@ -37,6 +37,33 @@ serve(async (req) => {
   console.log("client created")
 
   try {
+    let rulesDB = "";
+    let cardsDB = "";
+    let rulesSimilarity = 0;
+    let rulesKeyword = 0;
+    let cardSimilarity = 0;
+    let cardKeyword = 0;
+    if (inputpayload.game == "Magic the Gatherning") {
+      rulesDB = "rules";
+      cardsDB = "cards";
+      rulesSimilarity = 2;
+      rulesKeyword = 2;
+      cardSimilarity = 2;
+      cardKeyword = 2;
+    } else if (inputpayload.game == "Lorcana") {
+      rulesDB = "lorcana_rules";
+      cardsDB = "lorcana_cards";
+      rulesSimilarity = 2;
+      rulesKeyword = 2;
+      cardSimilarity = 2;
+      cardKeyword = 2;
+    } else {
+      return new Response(JSON.stringify({ error: "game not defined in request" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const model4 = new ChatOpenAI({
       temperature: 0,
       modelName: "gpt-4",
@@ -49,9 +76,9 @@ serve(async (req) => {
 
     const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 2,
-      keywordK: 2,
-      tableName: "rules",
+      similarityK: rulesSimilarity,
+      keywordK: rulesKeyword,
+      tableName: rulesDB,
       similarityQueryName: "match_rules",
       keywordQueryName: "kw_match_rules",
     });
@@ -59,9 +86,9 @@ serve(async (req) => {
   
     const cardsDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: 2,
-      keywordK: 2,
-      tableName: "cards",
+      similarityK: cardSimilarity,
+      keywordK: cardKeyword,
+      tableName: cardsDB,
       similarityQueryName: "match_cards",
       keywordQueryName: "kw_match_cards",
     });
