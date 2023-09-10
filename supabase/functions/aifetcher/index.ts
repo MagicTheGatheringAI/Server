@@ -11,17 +11,6 @@ import { corsHeaders } from "../_shared/cors.ts";
 
 const openaikey = Deno.env.get('openaikey');
 
-const promptTemplate = `Use the following pieces of context to answer the question at the end. Make sure information about rulings are in the answer. If you don't know the answer, just say that you don't know, don't try to make up an answer.
-
-{context}
-
-Question: {question}`;
-
-const prompt = PromptTemplate.fromTemplate(promptTemplate);
-
-const prefix =
-  "You are a helpful AI assistant. When receiving information from the cards tool, focus on the rulings info to help figure out how cards interact. Only use the information given to answer the questions.";
-
 serve(async (req) => {
   // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
@@ -43,6 +32,8 @@ serve(async (req) => {
     let rulesKeyword = 0;
     let cardSimilarity = 0;
     let cardKeyword = 0;
+    let promptTemplate = ``
+    let prefix = ""
     if (inputpayload.game == "Magic the Gatherning") {
       rulesDB = "rules";
       cardsDB = "cards";
@@ -50,6 +41,13 @@ serve(async (req) => {
       rulesKeyword = 2;
       cardSimilarity = 2;
       cardKeyword = 2;
+      promptTemplate = `Use the following pieces of context to answer the question at the end. Make sure information about rulings are in the answer. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+      {context}
+
+      Question: {question}`;
+      prefix =
+        "You are a helpful AI assistant. When receiving information from the cards tool, focus on the rulings info to help figure out how cards interact. Only use the information given to answer the questions.";
     } else if (inputpayload.game == "Lorcana") {
       rulesDB = "lorcana_rules";
       cardsDB = "lorcana_cards";
@@ -63,6 +61,8 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    const prompt = PromptTemplate.fromTemplate(promptTemplate);
 
     const model4 = new ChatOpenAI({
       temperature: 0,
