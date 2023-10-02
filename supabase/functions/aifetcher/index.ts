@@ -35,8 +35,8 @@ serve(async (req) => {
     let promptTemplate = ``
     let prefix = ""
     if (inputpayload.game == "Magic the Gatherning") {
-      rulesDB = "rules";
-      cardsDB = "cards";
+      rulesDB = "magic_rules";
+      cardsDB = "magic_cards";
       rulesSimilarity = 2;
       rulesKeyword = 2;
       cardSimilarity = 2;
