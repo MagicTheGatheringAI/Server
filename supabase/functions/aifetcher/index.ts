@@ -6,6 +6,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { createClient } from "@supabase/supabase-js";
 import { PromptTemplate } from "langchain/prompts";
 import { corsHeaders } from "../_shared/cors.ts";
+import { Database } from '../database.types.ts'
 import { ChainTool } from "langchain/tools";
 import { serve } from "std/server";
 
@@ -17,52 +18,25 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
   const inputpayload = await req.json();
-  const client = createClient(
+  const client = createClient<Database>(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
   );
   if (!client) throw new Error('supabase client was not created as expected')
-  console.log("client created")
+  console.log(inputpayload.game)
+
+  const { data, error } = await client
+    .from('games')
+    .select()
+  if (error) throw new Error('unable to pull games db' + error)
+  console.log(data)
+  const gameData = data.find(item => item.game === inputpayload.game)
+  console.log(gameData)
+  if (!gameData) throw new Error ('game data not able to be parsed')
 
   try {
-    let rulesDB = "";
-    let cardsDB = "";
-    let rulesSimilarity = 0;
-    let rulesKeyword = 0;
-    let cardSimilarity = 0;
-    let cardKeyword = 0;
-    let promptTemplate = ``
-    let prefix = ""
-    if (inputpayload.game == "Magic the Gatherning") {
-      rulesDB = "magic_rules";
-      cardsDB = "magic_cards";
-      rulesSimilarity = 2;
-      rulesKeyword = 2;
-      cardSimilarity = 2;
-      cardKeyword = 2;
-      promptTemplate = `Use the following pieces of context to answer the question at the end. Make sure information about rulings are in the answer. If you don't know the answer, just say that you don't know, don't try to make up an answer.
-
-      {context}
-
-      Question: {question}`;
-      prefix =
-        "You are a helpful AI assistant. When receiving information from the cards tool, focus on the rulings info to help figure out how cards interact. Only use the information given to answer the questions.";
-    } else if (inputpayload.game == "Lorcana") {
-      rulesDB = "lorcana_rules";
-      cardsDB = "lorcana_cards";
-      rulesSimilarity = 2;
-      rulesKeyword = 2;
-      cardSimilarity = 2;
-      cardKeyword = 2;
-    } else {
-      return new Response(JSON.stringify({ error: "game not defined in request" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const prompt = PromptTemplate.fromTemplate(promptTemplate);
+    const prompt = PromptTemplate.fromTemplate(gameData.promptTemplate);
 
     const model4 = new ChatOpenAI({
       temperature: 0,
@@ -76,49 +50,54 @@ serve(async (req) => {
 
     const rulesDocs = new SupabaseHybridSearch(embeddings, {
       client,
-      similarityK: rulesSimilarity,
-      keywordK: rulesKeyword,
-      tableName: rulesDB,
-      similarityQueryName: "match_rules",
-      keywordQueryName: "kw_match_rules",
+      similarityK: gameData.rulesSimilarity,
+      keywordK: gameData.rulesKeyword,
+      tableName: gameData.rules_db,
+      similarityQueryName: gameData.rulesSimilarityQueryName,
+      keywordQueryName: gameData.rulesKeywordQueryName,
     });
     const rulesChain = RetrievalQAChain.fromLLM(model4, rulesDocs);
   
-    const cardsDocs = new SupabaseHybridSearch(embeddings, {
-      client,
-      similarityK: cardSimilarity,
-      keywordK: cardKeyword,
-      tableName: cardsDB,
-      similarityQueryName: "match_cards",
-      keywordQueryName: "kw_match_cards",
-    });
-    const cardsChain = new RetrievalQAChain({
-      combineDocumentsChain: loadQAStuffChain(model4, { prompt }),
-      retriever: cardsDocs,
+    const rulesChainTool = new ChainTool({
+      name: "rules",
+      description:
+        "Rules QA - useful for when you need to ask questions about the rules of the game you are asked about",
+      chain: rulesChain,
     });
 
-    console.log("vectorstores are created")
-    console.log(inputpayload.prompt)
+    // PIECES
+    let tools: Array<ChainTool>
+    if (gameData.pieces_db != null && gameData.piecesSimilarityQueryName != null && gameData.piecesKeywordQueryName != null) {
+      const piecesDocs = new SupabaseHybridSearch(embeddings, {
+        client,
+        similarityK: gameData.piecesSimilarity,
+        keywordK: gameData.piecesKeyword,
+        tableName: gameData.pieces_db,
+        similarityQueryName: gameData.piecesSimilarityQueryName,
+        keywordQueryName: gameData.piecesKeywordQueryName,
+      });
+      const piecesChain = new RetrievalQAChain({
+        combineDocumentsChain: loadQAStuffChain(model4, { prompt }),
+        retriever: piecesDocs,
+      })
+      const piecesChainTool = new ChainTool({
+        name: "cards",
+        description:
+          "Cards QA - useful for when you need to ask questions about specific cards or game pieces in the game you are asked about it",
+        chain: piecesChain
+      });
 
-  const rulesChainTool = new ChainTool({
-    name: "rules",
-    description:
-      "Rules QA - useful for when you need to ask questions about the rules of magic the gathering",
-    chain: rulesChain,
-  });
+      tools = [
+        rulesChainTool,
+        piecesChainTool
+      ];
+    } else {
+      tools = [
+        rulesChainTool
+      ];
+    }
 
-  const cardsChainTool = new ChainTool({
-    name: "cards",
-    description:
-      "Cards QA - useful for when you need to ask questions about specific cards in magic the gathering",
-    chain: cardsChain
-  });
-
-  const tools = [
-    rulesChainTool,
-    cardsChainTool
-  ];
-
+  const prefix = gameData.prefix  
   const executor = await initializeAgentExecutorWithOptions(
     tools, model4, {
       agentType: "openai-functions",
@@ -128,6 +107,7 @@ serve(async (req) => {
       },
     }
   );
+  console.log(inputpayload.prompt)
   const res = await executor.call({
     input: inputpayload.prompt,
     metadata: { referid: inputpayload.referid },

@@ -38,7 +38,17 @@ export interface Database {
           launched: boolean
           parent_game: string | null
           pieces_db: string | null
+          piecesKeyword: number
+          piecesKeywordQueryName: string | null
+          piecesSimilarity: number
+          piecesSimilarityQueryName: string | null
+          prefix: string
+          promptTemplate: string
           rules_db: string
+          rulesKeyword: number
+          rulesKeywordQueryName: string
+          rulesSimilarity: number
+          rulesSimilarityQueryName: string
           training_file: string
         }
         Insert: {
@@ -48,7 +58,17 @@ export interface Database {
           launched?: boolean
           parent_game?: string | null
           pieces_db?: string | null
+          piecesKeyword?: number
+          piecesKeywordQueryName?: string | null
+          piecesSimilarity?: number
+          piecesSimilarityQueryName?: string | null
+          prefix: string
+          promptTemplate: string
           rules_db: string
+          rulesKeyword?: number
+          rulesKeywordQueryName: string
+          rulesSimilarity?: number
+          rulesSimilarityQueryName: string
           training_file: string
         }
         Update: {
@@ -58,7 +78,17 @@ export interface Database {
           launched?: boolean
           parent_game?: string | null
           pieces_db?: string | null
+          piecesKeyword?: number
+          piecesKeywordQueryName?: string | null
+          piecesSimilarity?: number
+          piecesSimilarityQueryName?: string | null
+          prefix?: string
+          promptTemplate?: string
           rules_db?: string
+          rulesKeyword?: number
+          rulesKeywordQueryName?: string
+          rulesSimilarity?: number
+          rulesSimilarityQueryName?: string
           training_file?: string
         }
         Relationships: [
@@ -229,7 +259,7 @@ export interface Database {
         }
         Returns: unknown
       }
-      kw_match_cards: {
+      kw_match_catan_rules: {
         Args: {
           query_text: string
           match_count: number
@@ -241,7 +271,31 @@ export interface Database {
           similarity: number
         }[]
       }
-      kw_match_catan_rules: {
+      kw_match_lorcana_cards: {
+        Args: {
+          query_text: string
+          match_count: number
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
+      kw_match_lorcana_rules: {
+        Args: {
+          query_text: string
+          match_count: number
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
+      kw_match_magic_cards: {
         Args: {
           query_text: string
           match_count: number
@@ -265,19 +319,6 @@ export interface Database {
           similarity: number
         }[]
       }
-      match_cards: {
-        Args: {
-          query_embedding: string
-          match_count: number
-          filter?: Json
-        }
-        Returns: {
-          id: string
-          content: string
-          metadata: Json
-          similarity: number
-        }[]
-      }
       match_catan_rules: {
         Args: {
           query_embedding: string
@@ -291,7 +332,46 @@ export interface Database {
           similarity: number
         }[]
       }
+      match_lorcana_cards: {
+        Args: {
+          query_embedding: string
+          match_count: number
+          filter?: Json
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
+      match_lorcana_rules: {
+        Args: {
+          query_embedding: string
+          match_count: number
+          filter?: Json
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
       match_magic_rules: {
+        Args: {
+          query_embedding: string
+          match_count: number
+          filter?: Json
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
+      match_mtg_cards: {
         Args: {
           query_embedding: string
           match_count: number
