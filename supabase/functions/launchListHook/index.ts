@@ -37,7 +37,7 @@ serve(async (req) => {
     body: JSON.stringify({
         from: 'Josh <josh@invites.magicrules.ai>',
         to: [event[0].email],
-        subject: "You are on the waitlist for Magic AI!",
+        subject: "You are on the waitlist for Cardboard AI!",
         reply_to: "josh@magicrules.ai",
         html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -173,8 +173,8 @@ serve(async (req) => {
                                       <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                           <td style="padding-right: 0px;padding-left: 0px;" align="center">
-                                            <a href="https://magicrules.ai" target="_blank">
-                                              <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/logo" alt="Magic AI Logo" title="Magic AI Logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
+                                            <a href="https://cardboardai.xyz" target="_blank">
+                                              <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/cardboard%20ai%20logo.png" alt="Cardboard AI Logo" title="Cardboard AI Logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
                                                 width="470" />
         
                                           </td>
@@ -191,7 +191,7 @@ serve(async (req) => {
                                   <tr>
                                     <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
         
-                                      <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;">Clear, trustworthy MTG rules in your pocket.</h1>
+                                      <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;">Clear, trustworthy rules in your pocket.</h1>
         
                                     </td>
                                   </tr>
@@ -219,8 +219,8 @@ serve(async (req) => {
                                         <p style="line-height: 140%;">&nbsp;</p>
                                         <p style="line-height: 140%;">Hey there,</p>
                                         <p style="line-height: 140%;">&nbsp;</p>
-                                        <p style="line-height: 140%;">Thanks for your interest in Magic AI! I am slowing letting people off of the waitlist when I need to collect new data. I don't have any sort of ETA for this.</p>
-                                        <p style="line-height: 140%;">Keep up to date on <a target="_blank" href="https://twitter.com/magic_tcg_ai" rel="noopener">twitter</a> if you are interested!</p>
+                                        <p style="line-height: 140%;">Thanks for your interest in Cardboard AI! I am slowing letting people off of the waitlist when I need to collect new data. I don't have any sort of ETA for this.</p>
+                                        <p style="line-height: 140%;">Keep up to date on <a target="_blank" href="https://twitter.com/cardboardai" rel="noopener">twitter</a> if you are interested!</p>
                                       </div>
         
                                     </td>
@@ -362,8 +362,8 @@ serve(async (req) => {
         
                                       <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                                         <p style="line-height: 140%;">
-                                          <a title="" target="_blank" href="https://magicrules.ai" rel="noopener">magicrules.ai</a></p>
-                                        <p style="line-height: 140%;"><a title="" target="_blank" href="https://magicrules.ai/privacy-policy" rel="noopener">Privacy Policy</a></p>
+                                          <a title="" target="_blank" href="https://cardboardai.xyz" rel="noopener">cardboardai.xyz</a></p>
+                                        <p style="line-height: 140%;"><a title="" target="_blank" href="https://cardboardai.xyz/privacy-policy" rel="noopener">Privacy Policy</a></p>
                                       </div>
         
                                     </td>
@@ -399,7 +399,7 @@ serve(async (req) => {
                                             <tbody>
                                               <tr style="vertical-align: top">
                                                 <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                                  <a href="https://twitter.com/magic_tcg_ai" title="Twitter" target="_blank">
+                                                  <a href="https://twitter.com/cardboardai" title="Twitter" target="_blank">
                                                     <img src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/image-2.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                   </a>
                                                 </td>

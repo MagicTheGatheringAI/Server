@@ -20,7 +20,7 @@ serve(async (req) => {
         body: JSON.stringify({
             from: 'Josh <josh@invites.magicrules.ai>',
             to: [tablechange.record.email],
-            subject: "Invite to Magic AI!",
+            subject: "Invite to Cardboard AI!",
             reply_to: "josh@magicrules.ai",
             html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -159,8 +159,8 @@ serve(async (req) => {
                                           <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                             <tr>
                                               <td style="padding-right: 0px;padding-left: 0px;" align="center">
-                                                <a href="https://magicrules.ai" target="_blank">
-                                                  <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/logo" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
+                                                <a href="https://cardboardai.xyz" target="_blank">
+                                                  <img align="center" border="0" src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/cardboard%20ai%20logo.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 470px;"
                                                     width="470" />
                                                 </a>
                                               </td>
@@ -177,7 +177,7 @@ serve(async (req) => {
                                       <tr>
                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
             
-                                          <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;">Clear, trustworthy MTG rules in your pocket.</h1>
+                                          <h1 style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;">Clear, trustworthy rules in your pocket.</h1>
             
                                         </td>
                                       </tr>
@@ -203,8 +203,8 @@ serve(async (req) => {
             
                                           <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                                           <div align="center">
-                                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://app.magicrules.ai" style="height:43px; v-text-anchor:middle; width:99px;" arcsize="9.5%"  stroke="f" fillcolor="#002cb8"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
-                                            <a href="https://app.magicrules.ai" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #002cb8; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 19px;">
+                                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://app.cardboardai.xyz" style="height:43px; v-text-anchor:middle; width:99px;" arcsize="9.5%"  stroke="f" fillcolor="#002cb8"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
+                                            <a href="https://app.cardboardai.xyz" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #002cb8; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 19px;">
                                               <span style="display:block;padding:10px 20px;line-height:120%;"><span style="line-height: 22.8px;">Signup</span></span>
                                             </a>
                                             <!--[if mso]></center></v:roundrect><![endif]-->
@@ -224,12 +224,12 @@ serve(async (req) => {
                                             <p style="line-height: 140%;">&nbsp;</p>
                                             <p style="line-height: 140%;">Hey there,</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
-                                            <p style="line-height: 140%;">Thanks for your interest in Magic AI! You can now signup with this email address or Login with Google with this email address at <a title="" target="_blank" href="https://app.magicrules.ai" rel="noopener">app.magicrules.ai</a>.</p>
+                                            <p style="line-height: 140%;">Thanks for your interest in Cardboard AI! You can now signup with this email address or Login with Google with this email address at <a title="" target="_blank" href="https://app.cardboardai.xyz" rel="noopener">app.cardboardai.xyz</a>.</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
                                             <p style="line-height: 140%;">I've been working on this idea since the start of 2023 and progress has been slow. Though, I am optimistic of the state of the project and it is time to hear some real word feedback.</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
-                                            <p style="line-height: 140%;">That is wear you come in. You will have trial credits in your account you can use for free. I want to hear about your experience and use this feedback to improve! I know Magic AI isn't yet perfect and it will get things wrong sometimes. The next thing on the roadmap is to make this feedback easy,
-                                              right inside of Magic AI. For now shoot me a message on <a title="" target="_blank" href="https://twitter.com/magic_tcg_ai" rel="noopener">Twitter</a> or send an email to <a title="" target="_blank" href="mailto:feedback@mtgrules.ai?subject=Feedback"
+                                            <p style="line-height: 140%;">That is wear you come in. You will have trial credits in your account you can use for free. I want to hear about your experience and use this feedback to improve! I know Cardboard AI isn't yet perfect and it will get things wrong sometimes. The next thing on the roadmap is to make this feedback easy,
+                                              right inside of Cardboard AI. For now shoot me a message on <a title="" target="_blank" href="https://twitter.com/cardboardai" rel="noopener">Twitter</a> or send an email to <a title="" target="_blank" href="mailto:feedback@mtgrules.ai?subject=Feedback"
                                                 rel="noopener">feedback@mtgrules.ai</a>.</p>
                                             <p style="line-height: 140%;">&nbsp;</p>
                                           </div>
@@ -356,8 +356,8 @@ serve(async (req) => {
             
                                           <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                                           <div align="center">
-                                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://app.magicrules.ai" style="height:43px; v-text-anchor:middle; width:99px;" arcsize="9.5%"  stroke="f" fillcolor="#002cb8"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
-                                            <a href="https://app.magicrules.ai" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #002cb8; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 19px;">
+                                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://app.cardboardai.xyz" style="height:43px; v-text-anchor:middle; width:99px;" arcsize="9.5%"  stroke="f" fillcolor="#002cb8"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
+                                            <a href="https://app.cardboardai.xyz" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #002cb8; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 19px;">
                                               <span style="display:block;padding:10px 20px;line-height:120%;"><span style="line-height: 22.8px;">Signup</span></span>
                                             </a>
                                             <!--[if mso]></center></v:roundrect><![endif]-->
@@ -429,8 +429,8 @@ serve(async (req) => {
             
                                           <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                                             <p style="line-height: 140%;">
-                                              <a title="" target="_blank" href="https://magicrules.ai" rel="noopener">magicrules.ai</a></p>
-                                            <p style="line-height: 140%;"><a title="" target="_blank" href="https://magicrules.ai/privacy-policy" rel="noopener">Privacy Policy</a></p>
+                                              <a title="" target="_blank" href="https://cardboardai.xyz" rel="noopener">cardboardai.xyz</a></p>
+                                            <p style="line-height: 140%;"><a title="" target="_blank" href="https://cardboardai.xyz/privacy-policy" rel="noopener">Privacy Policy</a></p>
                                           </div>
             
                                         </td>
@@ -466,7 +466,7 @@ serve(async (req) => {
                                                 <tbody>
                                                   <tr style="vertical-align: top">
                                                     <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                                      <a href="https://twitter.com/magic_tcg_ai" title="Twitter" target="_blank">
+                                                      <a href="https://twitter.com/cardboardai" title="Twitter" target="_blank">
                                                         <img src="https://tzrsrwethpgxfeukzgkw.supabase.co/storage/v1/object/public/email%20resources/image-2.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                       </a>
                                                     </td>
