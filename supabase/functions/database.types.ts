@@ -30,6 +30,27 @@ export interface Database {
         }
         Relationships: []
       }
+      dune_rules: {
+        Row: {
+          content: string | null
+          embedding: string | null
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          content?: string | null
+          embedding?: string | null
+          id: string
+          metadata?: Json | null
+        }
+        Update: {
+          content?: string | null
+          embedding?: string | null
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
       games: {
         Row: {
           created: string
@@ -62,8 +83,8 @@ export interface Database {
           piecesKeywordQueryName?: string | null
           piecesSimilarity?: number
           piecesSimilarityQueryName?: string | null
-          prefix: string
-          promptTemplate: string
+          prefix?: string
+          promptTemplate?: string
           rules_db: string
           rulesKeyword?: number
           rulesKeywordQueryName: string
@@ -95,6 +116,7 @@ export interface Database {
           {
             foreignKeyName: "games_parent_game_fkey"
             columns: ["parent_game"]
+            isOneToOne: false
             referencedRelation: "games"
             referencedColumns: ["game"]
           }
@@ -216,12 +238,14 @@ export interface Database {
           {
             foreignKeyName: "training_ledger_file_id_fkey"
             columns: ["file_id"]
+            isOneToOne: false
             referencedRelation: "objects"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "training_ledger_game_fkey"
             columns: ["game"]
+            isOneToOne: false
             referencedRelation: "games"
             referencedColumns: ["game"]
           }
@@ -260,6 +284,18 @@ export interface Database {
         Returns: unknown
       }
       kw_match_catan_rules: {
+        Args: {
+          query_text: string
+          match_count: number
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
+      kw_match_dune_rules: {
         Args: {
           query_text: string
           match_count: number
@@ -332,6 +368,19 @@ export interface Database {
           similarity: number
         }[]
       }
+      match_dune_rules: {
+        Args: {
+          query_embedding: string
+          match_count: number
+          filter?: Json
+        }
+        Returns: {
+          id: string
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
       match_lorcana_cards: {
         Args: {
           query_embedding: string
@@ -358,7 +407,7 @@ export interface Database {
           similarity: number
         }[]
       }
-      match_magic_rules: {
+      match_magic_cards: {
         Args: {
           query_embedding: string
           match_count: number
@@ -371,7 +420,7 @@ export interface Database {
           similarity: number
         }[]
       }
-      match_mtg_cards: {
+      match_magic_rules: {
         Args: {
           query_embedding: string
           match_count: number

@@ -1,3 +1,4 @@
 dependencies:
   supabase@1.104.0
-  snaplet@0.74.0
+  snaplet@0.74.3
+  deno.land@1.38.1

@@ -29,7 +29,7 @@ serve(async (req) => {
   const { data, error } = await client
     .from('games')
     .select()
-  if (error) throw new Error('unable to pull games db' + error)
+  if (error) throw new Error('unable to pull games db: ' + error)
   console.log(data)
   const gameData = data.find(item => item.game === inputpayload.game)
   console.log(gameData)
@@ -134,4 +134,5 @@ serve(async (req) => {
 // curl -i --location --request POST 'http://localhost:54321/functions/v1/aifetcher' \
 //   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
 //   --header 'Content-Type: application/json' \
-//   --data '{"input":"tell me how the attack phase works in magic the gathering"}'
+  // --data '{"prompt":"tell me how the attack phase works in magic the gathering",
+  //          "game":"magic the gathering",}'
